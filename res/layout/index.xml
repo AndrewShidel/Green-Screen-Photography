@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+	android:id="@+id/rl"
+	android:background="@drawable/b1">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Picture or Video?" 
+		android:gravity="center"
+		android:textSize="20dp"/>
+
+	<Button
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Video" 
+		android:onClick="getVideo"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentBottom="true"/>
+
+	<Button
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Image" 
+		android:id="@+id/tb"
+		android:onClick="getImage"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentBottom="true"	/>
+
+</RelativeLayout>

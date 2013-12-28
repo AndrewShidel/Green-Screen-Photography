@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?> 
+	<resources> 
+		<string name="app_name">Green Screen Photography</string> 
+		<string name="location">Location</string>
+		<string name="cant_read_folder">folder can\'t be read!</string>
+		<string name="nnew">New</string> 
+		<string name="select">Select</string>
+		<string name="file_name">File name:</string> 
+		<string name="cancel">Cancel</string>
+		<string name="create">Save</string> 
+		<string name="no_data">No Data</string>
+		<color name="gray">#ffff0000</color> 
+		<string name="err">Error</string>
+		<string name="title1">Step 1: Get Background</string>
+		<string name="title2">Step 2: Get Picture #2</string>
+		<string name="text2">Pick a picture to apply the green screen effect to</string>
+		<string name="text1">Select the image to use as your background</string>
+		<string name="button1">Load Image</string>
+		<string name="button2">Take Image</string>
+		<string name="b1">Retry</string>
+		<string name="b2">Rate App</string>
+		<string name="b3">Exit</string>
+		<string name="b4">Text</string>
+		<string name="b5">Set as Background</string>
+		<string name="b6">Email</string>
+		<string name="b7"></string>
+		<string name="toast1">Picture Saved</string>
+		<string name="toast2">Background Set</string>
+		<string name="toast3">Proccessing...</string>
+		<string name="t1">Thank You!</string>
+		<string name="t2">Your image has been saved to your camera roll</string>
+		<string name="t3">What to do next?</string>
+		<string name="t4">Tap the image to open in gallery</string>
+		<string name="t5">Share With:</string>
+		<string name="dialog1">•Touch the green circle to toggle color selection \n\n •Zoomin with pinch to zoom to select one or multiple colors \n\n •Adjust the threshold to desired level \n\n •Touch next to continue</string>
+		<string name="dialog2">1. Move your image into the desired location\n\n2. use two fingers to zoom and rotate\n\n3. Tap save to save</string>
+		<string name="click">Continue</string>
+		<string name="dt1">Step 3: Set transparent colors</string>
+		<string name="dt2">Step 4: Merge the images</string>
+		
+			
+		</resources>
