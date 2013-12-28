@@ -11,6 +11,7 @@ import android.view.*;
 import android.widget.*;
 import java.io.*;
 import java.util.*;
+import tucker.shidel.greenscreen.R;
 
 public class done extends Activity
 {

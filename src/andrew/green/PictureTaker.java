@@ -17,6 +17,7 @@ import android.view.View.*;
 import android.widget.*;
 import java.io.*;
 import java.util.*;
+import tucker.shidel.greenscreen.R;
 
 import android.hardware.Camera;
 
@@ -129,6 +130,7 @@ public class PictureTaker extends Activity
 			
          } // end method surfaceCreated
          
+         
          @Override
          public void surfaceChanged(SurfaceHolder holder, int format,
             int width, int height)                                   
@@ -163,6 +165,7 @@ public class PictureTaker extends Activity
 			
          } // end method surfaceChanged
 		 
+         
 		 public void setPrefs(boolean flash){
 			 Camera.Parameters p = camera.getParameters();               
 			 p.setPreviewSize(sizes.get(0).width, sizes.get(0).height);  
@@ -197,16 +200,20 @@ public class PictureTaker extends Activity
 	};
 
 	// Handles data for raw picture
-	PictureCallback rawCallback = new PictureCallback() { // <7>
+	/*PictureCallback rawCallback = new PictureCallback() { // <7>
 		public void onPictureTaken(byte[] data, Camera camera) {
+			data = null;
+			System.gc();
 			Log.d(TAG, "onPictureTaken - raw");
 		}
-	};
+	};*/
 
 	// Handles data for jpeg picture
 	PictureCallback jpegCallback = new PictureCallback() { // <8>
 		public void onPictureTaken(byte[] data, Camera camera) {
-			byte[] bitmapdata=new byte[data.length];
+			//byte[] bitmapdata = new byte[1];
+			
+			int length = data.length;
 			String fileName;
 			int orientation=getRequestedOrientation();
 			Log.d("a","orientation"+String.valueOf(orientation));
@@ -215,17 +222,19 @@ public class PictureTaker extends Activity
 				}else{
 					fileName= "temp2" + System.currentTimeMillis();
 				}
-			
+		/*	
 		if (portrait){
+			try{
 			final BitmapFactory.Options options = new BitmapFactory.Options(); 
 			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeByteArray(data,0,data.length);
-
-           options.inSampleSize = Converter.calculateInSampleSize(options, 1000, 1000);
+			//BitmapFactory.decodeByteArray(data,0,data.length);
+			
+           options.inSampleSize = 2;//Converter.calculateInSampleSize(options, 500, 500);
 
            options.inJustDecodeBounds = false;
-			
+           
 			Bitmap b=BitmapFactory.decodeByteArray(data,0,data.length,options);
+			
 			int bw=b.getWidth();
 			int bh=b.getHeight();
 			
@@ -233,7 +242,7 @@ public class PictureTaker extends Activity
 			m.postRotate(90);
 			b=Bitmap.createBitmap(b,0,0,bw,bh,m,true);
 			
-		
+		  
            //bitmap.getPixels(i,0,bitmap.getWidth(),0,0,bitmap.getWidth(),bitmap.getHeight());
 		  
 		   data=null;
@@ -241,18 +250,59 @@ public class PictureTaker extends Activity
 		   if (h>=w){
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			b.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+			bitmapdata=new byte[length];
 			bitmapdata = stream.toByteArray();
+			b.recycle();
+			}
+			 }catch (OutOfMemoryError e){
+				 
+				 
+				 
+				 final BitmapFactory.Options options = new BitmapFactory.Options(); 
+					options.inJustDecodeBounds = true;
+					//BitmapFactory.decodeByteArray(data,0,data.length);
+					
+		           options.inSampleSize = 8;//Converter.calculateInSampleSize(options, 500, 500);
+
+		           options.inJustDecodeBounds = false;
+					
+					Bitmap b=BitmapFactory.decodeByteArray(data,0,data.length,options);
+					
+					int bw=b.getWidth();
+					int bh=b.getHeight();
+					
+					Matrix m=new Matrix();
+					m.postRotate(90);
+					b=Bitmap.createBitmap(b,0,0,bw,bh,m,true);
+					
+				  
+		           //bitmap.getPixels(i,0,bitmap.getWidth(),0,0,bitmap.getWidth(),bitmap.getHeight());
+				  
+				   data=null;
+				   System.gc();
+				   if (h>=w){
+					ByteArrayOutputStream stream = new ByteArrayOutputStream();
+					b.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+					bitmapdata = stream.toByteArray();
+					b.recycle();
+					}
+				 
+				 
+				 
+				 
+				 
+			 }//end catch
 			
-			}
-			}
+			
+			}//end portrait
 //			int count=0;
 //			while (count<i.length){
 //				data[count]=(byte) i[count];
 //				count++;
-//			}
+//			}*/
 			
 			
-			
+		
 			// create a ContentValues and configure new image's data
 			ContentValues values = new ContentValues();
 			values.put(Images.Media.TITLE, fileName);
@@ -273,7 +323,7 @@ public class PictureTaker extends Activity
 				OutputStream outStream = 
 					getContentResolver().openOutputStream(uri);
 				
-				if (portrait)outStream.write(bitmapdata); // output the image
+				if (portrait)outStream.write(Converter.rotate(data)); // output the image
 				if (!portrait)outStream.write(data);
 				outStream.flush(); // empty the buffer
 				outStream.close(); // close the stream
@@ -283,7 +333,7 @@ public class PictureTaker extends Activity
 					prefs.edit().putString("pic1", uri.toString()).commit();
 					Intent intent=new Intent(PictureTaker.this,MainActivity.class);
 					Log.d("a","intent made");
-					message.show();
+					//message.show();
 					intent.putExtra("uri",uri.toString());
 				
 					//intent.putExtra("rawB",data);
@@ -300,7 +350,7 @@ public class PictureTaker extends Activity
 					intent.putExtra("source",2);
 				//	intent.putExtra("raw",data);
 					Log.d("a","saved successfully "+String.valueOf(a));
-					message.show();
+					//message.show();
 					startActivity(intent); 
 					finish();
 				}

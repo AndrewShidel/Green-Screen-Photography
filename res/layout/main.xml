@@ -22,24 +22,27 @@
 		android:id="@+id/t2"
 		android:layout_centerHorizontal="true"
 		android:layout_centerVertical="true"/>
-		
+
+	<RelativeLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerInParent="true"
+	    android:layout_below="@+id/t2">
+	<Button
+	    android:id="@+id/b"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:onClick="getImage"
+	    android:text="@+string/button1" />
 
 	<Button
-		android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-		android:id="@+id/b"
-        android:text="@+string/button1" 
-		android:onClick="getImage"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentBottom="true"/>
-		
-	<Button
-		android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@+string/button2" 
-		android:id="@+id/tb"
-		android:onClick="takePicture"
-		android:layout_alignParentRight="true"
-		android:layout_alignParentBottom="true"	/>
+	    android:id="@+id/tb"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@+id/b"
+	    android:onClick="takePicture"
+	    android:text="@+string/button2" />
 
+</RelativeLayout>
 </RelativeLayout>

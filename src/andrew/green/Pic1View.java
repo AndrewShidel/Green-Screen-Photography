@@ -1,5 +1,6 @@
 package andrew.green;
 
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.content.*;
 import android.graphics.*;
@@ -10,6 +11,7 @@ import android.util.*;
 import android.view.*;
 import android.widget.*;
 import java.io.*;
+import tucker.shidel.greenscreen.R;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -60,7 +62,7 @@ public class Pic1View extends Activity {
 	   // button1=BitmapFactory.decodeResource(getResources(), R.drawable.button1);
 		Bundle extras = getIntent().getExtras();
 		s=extras.getString("buri");
-		uriString=extras.getString("uri","not a uri");
+		uriString=extras.getString("uri");
 		Toast message = Toast.makeText(Pic1View.this,uriString, Toast.LENGTH_SHORT);
 		message.setGravity(Gravity.CENTER, message.getXOffset() / 2, 
 						   message.getYOffset() / 2);
@@ -83,6 +85,7 @@ public class Pic1View extends Activity {
 		
 		try
 		{
+			
 			prebitmap = MediaStore.Images.Media.getBitmap(r, uri);
 			Log.d("a","bitmap created");
 			bitmap=Converter.convertToMutable(prebitmap);
@@ -483,7 +486,7 @@ public class Pic1View extends Activity {
 				FileOutputStream fos;
 				try {
 					fos = new FileOutputStream(file);
-					bitmap2.setHasAlpha(true);
+					//bitmap2.setHasAlpha(true);
 					bitmap2.compress(Bitmap.CompressFormat.PNG, 100, fos);
 					
 					fos.close();
@@ -699,7 +702,8 @@ public class Pic1View extends Activity {
 			}
 		}
 
-        @Override
+        @SuppressLint("WrongCall")
+		@Override
         public void run() {
             Canvas c;
             while (_run) {

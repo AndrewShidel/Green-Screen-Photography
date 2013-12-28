@@ -5,6 +5,7 @@ import android.content.*;
 import android.os.*;
 import android.util.*;
 import android.view.*;
+import tucker.shidel.greenscreen.R;
 
 public class Index extends Activity
 {

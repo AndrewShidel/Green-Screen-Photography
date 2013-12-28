@@ -10,6 +10,7 @@ import android.util.*;
 import android.view.*;
 import android.widget.*;
 import java.io.*;
+import tucker.shidel.greenscreen.R;
 
 public class GetBackground extends Activity
 {

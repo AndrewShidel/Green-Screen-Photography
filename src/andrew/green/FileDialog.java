@@ -10,6 +10,7 @@ import android.view.inputmethod.*;
 import android.widget.*;
 import java.io.*;
 import java.util.*;
+import tucker.shidel.greenscreen.R;
 
 /** * Activity para escolha de arquivos/diretorios. * * @author android * */public class FileDialog extends ListActivity {
 

@@ -1,5 +1,6 @@
 package andrew.green;
 
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.content.*;
 import android.content.res.*;
@@ -10,6 +11,7 @@ import android.provider.*;
 import android.util.*;
 import android.view.*;
 import java.io.*;
+import tucker.shidel.greenscreen.R;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -248,6 +250,7 @@ public class Resize extends Activity {
 		
         }
 		
+		@SuppressLint("WrongCall")
 		public  Bitmap overlay(Bitmap bmp1, Bitmap bmp2) {
 			zero=true;
 			Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
@@ -483,7 +486,8 @@ public class Resize extends Activity {
             _run = run;
         }
 
-        @Override
+        @SuppressLint("WrongCall")
+		@Override
         public void run() {
             Canvas c;
             while (_run) {

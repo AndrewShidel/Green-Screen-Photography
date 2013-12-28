@@ -6,6 +6,7 @@ import android.media.*;
 import android.os.*;
 import android.view.*;
 import java.io.*;
+import tucker.shidel.greenscreen.R;
 
 public class VideoCapture extends Activity implements SurfaceHolder.Callback {
     MediaRecorder recorder;

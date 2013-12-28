@@ -5,6 +5,8 @@ import android.graphics.Bitmap.*;
 import android.net.*;
 import android.os.*;
 import android.util.*;
+import android.util.Config;
+
 import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
@@ -21,7 +23,7 @@ public class Converter {
 
 	        int width = imgIn.getWidth();
 	        int height = imgIn.getHeight();
-	        Config type = imgIn.getConfig();
+	        android.graphics.Bitmap.Config type = imgIn.getConfig();
 
 	        FileChannel channel = randomAccessFile.getChannel();
 	        MappedByteBuffer map = channel.map(MapMode.READ_WRITE, 0, imgIn.getRowBytes()*height);
@@ -47,6 +49,42 @@ public class Converter {
 	    } 
 
 	    return imgIn;
+	}
+	
+	public static byte[] rotate(byte[] data){
+		
+		BitmapFactory.Options options = new BitmapFactory.Options(); 
+		Bitmap originalBitmap=BitmapFactory.decodeByteArray(data,0,data.length,options);
+		data = null;
+		System.gc();
+		Matrix matrix = new Matrix();
+	    matrix.setRotate(90, originalBitmap.getWidth()/2, originalBitmap.getHeight()/2);
+	    
+	    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	    
+	    int quality = 100;
+	    boolean b = true;
+	    while (b){
+	    try{
+	    	Bitmap.createBitmap(originalBitmap, 0, 0, originalBitmap.getWidth(), originalBitmap.getHeight(), matrix, true).compress(Bitmap.CompressFormat.JPEG, quality, stream);
+	    	b=false;
+	    	break;
+	    }catch(java.lang.OutOfMemoryError e){
+	    	b=true;
+	    	quality*=0.75;
+	    	if (quality <= 10){
+	    		originalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	    		b=false;
+		    	break;
+	    	}
+	    }
+	    }
+	    
+	    originalBitmap = null;
+	    System.gc();
+	    
+	    return stream.toByteArray();
+	
 	}
 	
 	
