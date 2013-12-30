@@ -59,4 +59,75 @@ public class GetBackground extends Activity
 		startActivity(intent);
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+	String mCurrentPhotoPath;
+
+	private Uri createImageFile() throws IOException {
+		String fileName = "temp1" + System.currentTimeMillis();
+	    // create a ContentValues and configure new image's data
+		ContentValues values = new ContentValues();
+		values.put(Images.Media.TITLE, fileName);
+		values.put(Images.Media.DATE_ADDED, System.currentTimeMillis());
+		values.put(Images.Media.MIME_TYPE, "image/jpg");
+			
+
+		// get a Uri for the location to save the file
+		return getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values);
+	}
+
+
+	static final in REQUEST_TAKE_PHOTO = 1;
+
+	private void dispatchTakePictureIntent() {
+	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	    // Ensure that there's a camera activity to handle the intent
+	    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+	        // Create the File where the photo should go
+	        photoFile = null;
+	        try {
+	            photoFile = createImageFile();
+	        } catch (IOException ex) {
+	            
+	        }
+	        // Continue only if the File was successfully created
+	        if (photoFile != null) {
+	            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+	                    photoFile);
+	            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+	        }
+	    }
+	}
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		SharedPreferences prefs = getBaseContext().getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
+		prefs.edit().putString("pic1", photoFile.toString()).commit();
+		Intent intent=new Intent(GetBackground.this,MainActivity.class);
+		Log.d("a","intent made");
+					//message.show();
+		intent.putExtra("uri",photoFile.toString());
+
+		startActivity(intent); 
+		finish();
+	}
+
+	
+}
+
+
+
+
+
+
 }
