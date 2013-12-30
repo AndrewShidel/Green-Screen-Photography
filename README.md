@@ -11,4 +11,4 @@ How it works:
 2.  Find.Take a foreground image.
 3.  Select transpartent colors and color threshold for foreground.
 4.  Layer foreground infront of background.
-5.  Save/Export
+5.  Save/Export Image.
