@@ -12,29 +12,54 @@ import java.io.*;
 import java.util.*;
 import tucker.shidel.greenscreen.R;
 
-/** * Activity para escolha de arquivos/diretorios. * * @author android * */public class FileDialog extends ListActivity {
+/** * Activity para escolha de arquivos/diretorios. * * @author android * */
+public class FileDialog extends ListActivity {
 
-	/** * Chave de um item da lista de paths. */private static final String ITEM_KEY = "key";
+	/** * Chave de um item da lista de paths. */
+	private static final String ITEM_KEY = "key";
 
-	/** * Imagem de um item da lista de paths (diretorio ou arquivo). */private static final String ITEM_IMAGE = "image";
+	/** * Imagem de um item da lista de paths (diretorio ou arquivo). */
+	private static final String ITEM_IMAGE = "image";
 
-	/** * Diretorio raiz. */private static final String ROOT = "/";
+	/** * Diretorio raiz. */
+	private static final String ROOT = "/";
 
-	/** * Parametro de entrada da Activity: path inicial. Padrao: ROOT. */public static final String START_PATH = "START_PATH";
+	/** * Parametro de entrada da Activity: path inicial. Padrao: ROOT. */
+	public static final String START_PATH = "START_PATH";
 
-	/** * Parametro de entrada da Activity: filtro de formatos de arquivos. Padrao: * null. */public static final String FORMAT_FILTER = "FORMAT_FILTER";
+	/**
+	 * * Parametro de entrada da Activity: filtro de formatos de arquivos.
+	 * Padrao: * null.
+	 */
+	public static final String FORMAT_FILTER = "FORMAT_FILTER";
 
-	/** * Parametro de saida da Activity: path escolhido. Padrao: null. */public static final String RESULT_PATH = "RESULT_PATH";
+	/** * Parametro de saida da Activity: path escolhido. Padrao: null. */
+	public static final String RESULT_PATH = "RESULT_PATH";
 
-	/** * Parametro de entrada da Activity: tipo de selecao: pode criar novos paths * ou nao. Padrao: nao permite. * * @see {@link SelectionMode} */public static final String SELECTION_MODE = "SELECTION_MODE";
+	/**
+	 * * Parametro de entrada da Activity: tipo de selecao: pode criar novos
+	 * paths * ou nao. Padrao: nao permite. * * @see {@link SelectionMode}
+	 */
+	public static final String SELECTION_MODE = "SELECTION_MODE";
 
-	/** * Parametro de entrada da Activity: se e permitido escolher diretorios. * Padrao: falso. */public static final String CAN_SELECT_DIR = "CAN_SELECT_DIR";
+	/**
+	 * * Parametro de entrada da Activity: se e permitido escolher diretorios. *
+	 * Padrao: falso.
+	 */
+	public static final String CAN_SELECT_DIR = "CAN_SELECT_DIR";
 
-	private List<String> path = null; private TextView myPath; private EditText mFileName; private ArrayList<HashMap<String, Object>> mList;
+	private List<String> path = null;
+	private TextView myPath;
+	private EditText mFileName;
+	private ArrayList<HashMap<String, Object>> mList;
 
 	private Button selectButton;
 
-	private LinearLayout layoutSelect; private LinearLayout layoutCreate; private InputMethodManager inputManager; private String parentPath; private String currentPath = ROOT;
+	private LinearLayout layoutSelect;
+	private LinearLayout layoutCreate;
+	private InputMethodManager inputManager;
+	private String parentPath;
+	private String currentPath = ROOT;
 
 	private int selectionMode = SelectionMode.MODE_CREATE;
 
@@ -42,69 +67,93 @@ import tucker.shidel.greenscreen.R;
 
 	private boolean canSelectDir = false;
 
-	private File selectedFile; private HashMap<String, Integer> lastPositions = new HashMap<String, Integer>();
+	private File selectedFile;
+	private HashMap<String, Integer> lastPositions = new HashMap<String, Integer>();
 
-	/** * Called when the activity is first created. Configura todos os parametros * de entrada e das VIEWS.. */@Override public void onCreate(Bundle savedInstanceState) {
+	/**
+	 * * Called when the activity is first created. Configura todos os
+	 * parametros * de entrada e das VIEWS..
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState); setResult(RESULT_CANCELED, getIntent());
+		super.onCreate(savedInstanceState);
+		setResult(RESULT_CANCELED, getIntent());
 
-		setContentView(R.layout.file_dialog_main); myPath = (TextView) findViewById(R.id.path); mFileName = (EditText) findViewById(R.id.fdEditTextFile);
+		setContentView(R.layout.file_dialog_main);
+		myPath = (TextView) findViewById(R.id.path);
+		mFileName = (EditText) findViewById(R.id.fdEditTextFile);
 
 		inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-		selectButton = (Button) findViewById(R.id.fdButtonSelect); selectButton.setEnabled(false);
+		selectButton = (Button) findViewById(R.id.fdButtonSelect);
+		selectButton.setEnabled(false);
 
 		selectButton.setOnClickListener(new OnClickListener() {
 
-				@Override public void onClick(View v) { if (selectedFile != null) {
+			@Override
+			public void onClick(View v) {
+				if (selectedFile != null) {
 
-					//	getIntent().putExtra(RESULT_PATH, selectedFile.getPath());
+					// getIntent().putExtra(RESULT_PATH,
+					// selectedFile.getPath());
 
-						//setResult(RESULT_OK, getIntent());
-						int from=getIntent().getIntExtra("from",0);
-						if (from==1){
-			                SharedPreferences prefs = getBaseContext().getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
-							prefs.edit().putString("pic1", selectedFile.getPath()).commit();
-							Intent intent=new Intent(FileDialog.this,MainActivity.class);
-							Log.d("a","intent made");
-							
-							intent.putExtra("uri",selectedFile.getPath());
-							intent.putExtra("source",1);
-							startActivity(intent); 
+					// setResult(RESULT_OK, getIntent());
+					int from = getIntent().getIntExtra("from", 0);
+					if (from == 1) {
+						SharedPreferences prefs = getBaseContext()
+								.getSharedPreferences("com.example.app",
+										Context.MODE_PRIVATE);
+						prefs.edit().putString("pic1", selectedFile.getPath())
+								.commit();
+						Intent intent = new Intent(FileDialog.this,
+								MainActivity.class);
+						Log.d("a", "intent made");
 
-							finish();
-						}
-						if(from==2){
-							String s;
-							Bundle extras = getIntent().getExtras();
-							
-								s = extras.getString("uri");
-							
-						Intent intent=new Intent(FileDialog.this,Pic1View.class);
-						Log.d("a","intent made");
-						intent.putExtra("buri",s);
-						
-						intent.putExtra("uri",selectedFile.getPath());
-						intent.putExtra("source",6);
-						startActivity(intent); 
+						intent.putExtra("uri", selectedFile.getPath());
+						intent.putExtra("source", 1);
+						startActivity(intent);
 
 						finish();
-						}
-						} } });
+					}
+					if (from == 2) {
+						String s;
+						Bundle extras = getIntent().getExtras();
+
+						s = extras.getString("uri");
+
+						Intent intent = new Intent(FileDialog.this,
+								Pic1View.class);
+						Log.d("a", "intent made");
+						intent.putExtra("buri", s);
+
+						intent.putExtra("uri", selectedFile.getPath());
+						intent.putExtra("source", 6);
+						startActivity(intent);
+
+						finish();
+					}
+				}
+			}
+		});
 
 		final Button newButton = (Button) findViewById(R.id.fdButtonNew);
 
 		newButton.setOnClickListener(new OnClickListener() {
 
-				@Override public void onClick(View v) {
+			@Override
+			public void onClick(View v) {
 
-					setCreateVisible(v);
+				setCreateVisible(v);
 
-					mFileName.setText("");
+				mFileName.setText("");
 
-					mFileName.requestFocus(); } });
+				mFileName.requestFocus();
+			}
+		});
 
-		selectionMode = getIntent().getIntExtra(SELECTION_MODE, SelectionMode.MODE_CREATE);
+		selectionMode = getIntent().getIntExtra(SELECTION_MODE,
+				SelectionMode.MODE_CREATE);
 
 		formatFilter = getIntent().getStringArrayExtra(FORMAT_FILTER);
 
@@ -112,9 +161,11 @@ import tucker.shidel.greenscreen.R;
 
 		if (selectionMode == SelectionMode.MODE_OPEN) {
 
-			newButton.setEnabled(false); }
+			newButton.setEnabled(false);
+		}
 
-		layoutSelect = (LinearLayout) findViewById(R.id.fdLinearLayoutSelect); layoutCreate = (LinearLayout) findViewById(R.id.fdLinearLayoutCreate);
+		layoutSelect = (LinearLayout) findViewById(R.id.fdLinearLayoutSelect);
+		layoutCreate = (LinearLayout) findViewById(R.id.fdLinearLayoutCreate);
 
 		layoutCreate.setVisibility(View.GONE);
 
@@ -122,25 +173,41 @@ import tucker.shidel.greenscreen.R;
 
 		cancelButton.setOnClickListener(new OnClickListener() {
 
-				@Override public void onClick(View v) {
+			@Override
+			public void onClick(View v) {
 
-					setSelectVisible(v); }
+				setSelectVisible(v);
+			}
 
-			}); final Button createButton = (Button) findViewById(R.id.fdButtonCreate);
+		});
+		final Button createButton = (Button) findViewById(R.id.fdButtonCreate);
 
 		createButton.setOnClickListener(new OnClickListener() {
 
-				@Override public void onClick(View v) { if (mFileName.getText().length() > 0) {
+			@Override
+			public void onClick(View v) {
+				if (mFileName.getText().length() > 0) {
 
-						getIntent().putExtra(RESULT_PATH, currentPath + "/" + mFileName.getText());
+					getIntent().putExtra(RESULT_PATH,
+							currentPath + "/" + mFileName.getText());
 
-						setResult(RESULT_OK, getIntent());
+					setResult(RESULT_OK, getIntent());
 
-						finish(); } } });
+					finish();
+				}
+			}
+		});
 
-		String startPath = getIntent().getStringExtra(START_PATH); startPath = startPath != null ? startPath : ROOT; if (canSelectDir) { File file = new File(startPath); selectedFile = file;
+		String startPath = getIntent().getStringExtra(START_PATH);
+		startPath = startPath != null ? startPath : ROOT;
+		if (canSelectDir) {
+			File file = new File(startPath);
+			selectedFile = file;
 
-			selectButton.setEnabled(true); } getDir(startPath); }
+			selectButton.setEnabled(true);
+		}
+		getDir(startPath);
+	}
 
 	private void getDir(String dirPath) {
 
@@ -152,78 +219,134 @@ import tucker.shidel.greenscreen.R;
 
 		if (position != null && useAutoSelection) {
 
-			getListView().setSelection(position); }
+			getListView().setSelection(position);
+		}
 
 	}
 
-	/** * Monta a estrutura de arquivos e diretorios filhos do diretorio fornecido. * * @param dirPath * Diretorio pai. */private void getDirImpl(final String dirPath) {
+	/**
+	 * * Monta a estrutura de arquivos e diretorios filhos do diretorio
+	 * fornecido. * * @param dirPath * Diretorio pai.
+	 */
+	private void getDirImpl(final String dirPath) {
 
 		currentPath = dirPath;
 
-		final List<String> item = new ArrayList<String>(); path = new ArrayList<String>(); mList = new ArrayList<HashMap<String, Object>>();
+		final List<String> item = new ArrayList<String>();
+		path = new ArrayList<String>();
+		mList = new ArrayList<HashMap<String, Object>>();
 
-		File f = new File(currentPath); File[] files = f.listFiles(); if (files == null) { currentPath = ROOT; f = new File(currentPath); files = f.listFiles(); }
+		File f = new File(currentPath);
+		File[] files = f.listFiles();
+		if (files == null) {
+			currentPath = ROOT;
+			f = new File(currentPath);
+			files = f.listFiles();
+		}
 
 		myPath.setText(getText(R.string.location) + ": " + currentPath);
 
 		if (!currentPath.equals(ROOT)) {
 
-			item.add(ROOT); addItem(ROOT, R.drawable.folder); path.add(ROOT);
+			item.add(ROOT);
+			addItem(ROOT, R.drawable.folder);
+			path.add(ROOT);
 
-			item.add("../"); addItem("../", R.drawable.folder);
+			item.add("../");
+			addItem("../", R.drawable.folder);
 
-			path.add(f.getParent()); parentPath = f.getParent();
+			path.add(f.getParent());
+			parentPath = f.getParent();
 
 		}
 
-		TreeMap<String, String> dirsMap = new TreeMap<String, String>(); TreeMap<String, String> dirsPathMap = new TreeMap<String, String>(); TreeMap<String, String> filesMap = new TreeMap<String, String>(); TreeMap<String, String> filesPathMap = new TreeMap<String, String>(); for (File file : files) { if (file.isDirectory()) { String dirName = file.getName();
+		TreeMap<String, String> dirsMap = new TreeMap<String, String>();
+		TreeMap<String, String> dirsPathMap = new TreeMap<String, String>();
+		TreeMap<String, String> filesMap = new TreeMap<String, String>();
+		TreeMap<String, String> filesPathMap = new TreeMap<String, String>();
+		for (File file : files) {
+			if (file.isDirectory()) {
+				String dirName = file.getName();
 
 				dirsMap.put(dirName, dirName);
 
-				dirsPathMap.put(dirName, file.getPath()); } else { final String fileName = file.getName(); final String fileNameLwr = fileName.toLowerCase(); // se ha um filtro de formatos, utiliza-o 
-				if (formatFilter != null) { boolean contains = false; for (int i = 0; i < formatFilter.length; i++) {
+				dirsPathMap.put(dirName, file.getPath());
+			} else {
+				final String fileName = file.getName();
+				final String fileNameLwr = fileName.toLowerCase(); // se ha um
+																	// filtro de
+																	// formatos,
+																	// utiliza-o
+				if (formatFilter != null) {
+					boolean contains = false;
+					for (int i = 0; i < formatFilter.length; i++) {
 
-				final String formatLwr = formatFilter[i].toLowerCase();
+						final String formatLwr = formatFilter[i].toLowerCase();
 
-				if (fileNameLwr.endsWith(formatLwr)) {
+						if (fileNameLwr.endsWith(formatLwr)) {
 
-					contains = true;
+							contains = true;
 
-					break;
+							break;
 
-				} } if (contains) {
+						}
+					}
+					if (contains) {
 
-				filesMap.put(fileName, fileName);
+						filesMap.put(fileName, fileName);
 
-				filesPathMap.put(fileName, file.getPath()); } //senao, adiciona todos os arquivos } else {
+						filesPathMap.put(fileName, file.getPath());
+					} // senao, adiciona todos os arquivos } else {
 
-			filesMap.put(fileName, fileName);
+					filesMap.put(fileName, fileName);
 
-			filesPathMap.put(fileName, file.getPath()); } } }
+					filesPathMap.put(fileName, file.getPath());
+				}
+			}
+		}
 
-	item.addAll(dirsMap.tailMap("").values());
+		item.addAll(dirsMap.tailMap("").values());
 
-	item.addAll(filesMap.tailMap("").values());
+		item.addAll(filesMap.tailMap("").values());
 
-	path.addAll(dirsPathMap.tailMap("").values());
+		path.addAll(dirsPathMap.tailMap("").values());
 
-	path.addAll(filesPathMap.tailMap("").values());
+		path.addAll(filesPathMap.tailMap("").values());
 
-	SimpleAdapter fileList = new SimpleAdapter(this, mList, R.layout.file_dialog_row, new String[] { ITEM_KEY, ITEM_IMAGE }, new int[] { R.id.fdrowtext, R.id.fdrowimage });
+		SimpleAdapter fileList = new SimpleAdapter(this, mList,
+				R.layout.file_dialog_row,
+				new String[] { ITEM_KEY, ITEM_IMAGE }, new int[] {
+						R.id.fdrowtext, R.id.fdrowimage });
 
-	for (String dir : dirsMap.tailMap("").values()) { addItem(dir, R.drawable.folder); }
+		for (String dir : dirsMap.tailMap("").values()) {
+			addItem(dir, R.drawable.folder);
+		}
 
-	for (String file : filesMap.tailMap("").values()) { addItem(file, R.drawable.file); }
+		for (String file : filesMap.tailMap("").values()) {
+			addItem(file, R.drawable.file);
+		}
 
-	fileList.notifyDataSetChanged();
+		fileList.notifyDataSetChanged();
 
-	setListAdapter(fileList);
+		setListAdapter(fileList);
 
 	}
 
-	private void addItem(String fileName, int imageId) { HashMap<String, Object> item = new HashMap<String, Object>(); item.put(ITEM_KEY, fileName); item.put(ITEM_IMAGE, imageId); mList.add(item); }
+	private void addItem(String fileName, int imageId) {
+		HashMap<String, Object> item = new HashMap<String, Object>();
+		item.put(ITEM_KEY, fileName);
+		item.put(ITEM_IMAGE, imageId);
+		mList.add(item);
+	}
 
-	/** * Quando clica no item da lista, deve-se: 1) Se for diretorio, abre seus * arquivos filhos; 2) Se puder escolher diretorio, define-o como sendo o * path escolhido. 3) Se for arquivo, define-o como path escolhido. 4) Ativa * botao de selecao. */@Override protected void onListItemClick(ListView l, View v, int position, long id) {
+	/**
+	 * * Quando clica no item da lista, deve-se: 1) Se for diretorio, abre seus
+	 * * arquivos filhos; 2) Se puder escolher diretorio, define-o como sendo o
+	 * * path escolhido. 3) Se for arquivo, define-o como path escolhido. 4)
+	 * Ativa * botao de selecao.
+	 */
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
 
 		File file = new File(path.get(position));
 
@@ -231,33 +354,50 @@ import tucker.shidel.greenscreen.R;
 
 		if (file.isDirectory()) {
 
-			selectButton.setEnabled(false); if (file.canRead()) {
+			selectButton.setEnabled(false);
+			if (file.canRead()) {
 
 				lastPositions.put(currentPath, position);
 
-				getDir(path.get(position)); if (canSelectDir) {
+				getDir(path.get(position));
+				if (canSelectDir) {
 
 					selectedFile = file;
 
 					v.setSelected(true);
 
-					selectButton.setEnabled(true); } } else { new AlertDialog.Builder(this).setIcon(R.drawable.icon)
+					selectButton.setEnabled(true);
+				}
+			} else {
+				new AlertDialog.Builder(this)
+						.setIcon(R.drawable.icon)
 
-					.setTitle("[" + file.getName() + "] " + getText(R.string.cant_read_folder))
+						.setTitle(
+								"[" + file.getName() + "] "
+										+ getText(R.string.cant_read_folder))
 
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						.setPositiveButton("OK",
+								new DialogInterface.OnClickListener() {
 
-						@Override
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
 
-						public void onClick(DialogInterface dialog, int which) {
+									}
 
-						}
+								}).show();
+			}
+		} else {
+			selectedFile = file;
+			v.setSelected(true);
 
-					}).show(); } } else { selectedFile = file; v.setSelected(true);
+			selectButton.setEnabled(true);
+		}
+	}
 
-			selectButton.setEnabled(true); } }
-
-	@Override public boolean onKeyDown(int keyCode, KeyEvent event) { if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 
 			selectButton.setEnabled(false);
 
@@ -265,25 +405,41 @@ import tucker.shidel.greenscreen.R;
 
 				layoutCreate.setVisibility(View.GONE);
 
-				layoutSelect.setVisibility(View.VISIBLE); } else { if (!currentPath.equals(ROOT)) {
+				layoutSelect.setVisibility(View.VISIBLE);
+			} else {
+				if (!currentPath.equals(ROOT)) {
 
-					getDir(parentPath); } else { return super.onKeyDown(keyCode, event); } }
+					getDir(parentPath);
+				} else {
+					return super.onKeyDown(keyCode, event);
+				}
+			}
 
-			return true; } else { return super.onKeyDown(keyCode, event); } }
+			return true;
+		} else {
+			return super.onKeyDown(keyCode, event);
+		}
+	}
 
-	/** * Define se o botao de CREATE e visivel. * * @param v */private void setCreateVisible(View v) {
+	/** * Define se o botao de CREATE e visivel. * * @param v */
+	private void setCreateVisible(View v) {
 
 		layoutCreate.setVisibility(View.VISIBLE);
 
 		layoutSelect.setVisibility(View.GONE);
 
-		inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0); selectButton.setEnabled(false); }
+		inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		selectButton.setEnabled(false);
+	}
 
-	/** * Define se o botao de SELECT e visivel. * * @param v */private void setSelectVisible(View v) {
+	/** * Define se o botao de SELECT e visivel. * * @param v */
+	private void setSelectVisible(View v) {
 
 		layoutCreate.setVisibility(View.GONE);
 
 		layoutSelect.setVisibility(View.VISIBLE);
 
-		inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0); selectButton.setEnabled(false); } 
+		inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		selectButton.setEnabled(false);
+	}
 }
