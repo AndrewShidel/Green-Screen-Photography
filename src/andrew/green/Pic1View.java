@@ -729,7 +729,7 @@ public class Pic1View extends Activity {
 					r2 = Color.red(bp);
 					g2 = Color.green(bp);
 					b2 = Color.blue(bp);
-					if (Math.abs(a - a2) <= t  Math.sqrt(Math.pow((r-r2),2) + Math.pow((g-g2),2) + Math.pow((b-b2),2))){ //&& Math.abs(r - r2) <= t
+					if (Math.abs(a - a2) <= t  Math.sqrt(Math.pow((r-r2),2) + Math.pow((g-g2),2) + Math.pow((b-b2),2)) <= t){ //&& Math.abs(r - r2) <= t
 							//&& Math.abs(g - g2) <= t * 2
 							//&& Math.abs(b - b2) <= t) {
 
