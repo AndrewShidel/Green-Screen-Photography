@@ -761,6 +761,12 @@ public class Pic1View extends Activity {
 							bitmap.getWidth(), bitmap.getHeight());
 					shouldmodify = false;
 					int counter = 1;
+					Toast message = Toast.makeText(Pic1View.this, "Saving image...",
+						Toast.LENGTH_SHORT);
+					message.setGravity(Gravity.CENTER, message.getXOffset() / 2,
+					message.getYOffset() / 2);
+					message.show(); // display the Toast
+					
 					while (counter <= index && index > 0) {
 						if (index > 0)
 							modify(colorA[counter - 1]);
