@@ -21,7 +21,11 @@ public class GetBackground extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
+		
+		DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		
+		Log.d("resource folder: ", ""+metrics.densityDpi);
 	}
 
 	public void takePicture(View view) {

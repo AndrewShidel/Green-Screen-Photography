@@ -56,6 +56,7 @@ public class Pic1View extends Activity {
 	Paint linepaint, bpaint;
 	BitmapFactory.Options o;
 	File file;
+	int threadsFinished = 0;
 
 	private static float MIN_ZOOM = .025f;
 	private static float MAX_ZOOM = 500f;
@@ -350,7 +351,13 @@ public class Pic1View extends Activity {
 				}
 				if (tx1 >= b3x && tx1 <= b3x + button3.getWidth() && ty1 >= b3y
 						&& ty1 <= b3y + button3.getWidth()) {
+					Toast message = Toast.makeText(Pic1View.this, "Saving image please wait...",
+							Toast.LENGTH_SHORT);
+					message.setGravity(Gravity.CENTER, message.getXOffset() / 2,
+							message.getYOffset() / 2);
+					message.show(); // display the Toast
 					if (source != 1) {
+																		
 						Log.d("a", "touched");
 						// bitmap.getPixels(pixels,0,bitmap.getWidth(),0,0,bitmap.getWidth(),bitmap.getHeight());
 						Log.d("a", "got pixels");
@@ -688,6 +695,52 @@ public class Pic1View extends Activity {
 			// }
 		}
 	}
+	
+	
+	public class Worker implements Runnable {
+	    final private int minIndex; // first index, inclusive
+	    final private int maxIndex; // last index, exclusive
+	    final private int[] data;
+	    final private int color1;
+
+	    public Worker(int color1, int minIndex, int maxIndex, int[] data) {
+	        this.minIndex = minIndex;
+	        this.maxIndex = maxIndex;
+	        this.data = data;
+	        this.color1 = color1;
+	    }
+
+	    public void run() {
+			int a, r, g, b;
+			a = Color.alpha(color1);
+			r = Color.red(color1);
+			g = Color.green(color1);
+			b = Color.blue(color1);
+	        for(int i = minIndex; i < maxIndex; i++) {
+	        	if (Math.abs(a - Color.alpha(data[i])) <= t  
+	        			&& Math.sqrt(
+	        					Math.pow((r-Color.red(data[i])),2) 
+	        					+ Math.pow((g-Color.green(data[i])),2) 
+	        					+ Math.pow((b-Color.blue(data[i])),2)) <= t){ 
+	        		
+					data[i] = Color.TRANSPARENT;
+					count++;
+					
+	        	}
+	        }
+	        threadsFinished++;
+	        if (threadsFinished >= 8*index){
+	        	bitmap.setPixels(data, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+	        	threadsFinished = 0;
+	        }
+	    }
+	}
+
+	
+	
+	
+	
+	
 
 	public class TutorialThread extends Thread {
 		private SurfaceHolder _surfaceHolder;
@@ -722,14 +775,14 @@ public class Pic1View extends Activity {
 				r = Color.red(color1);
 				g = Color.green(color1);
 				b = Color.blue(color1);
-
+				
 				while (cx < width && cy < height) {
 					bp = bitmap.getPixel(cx, cy);
 					a2 = Color.alpha(bp);
 					r2 = Color.red(bp);
 					g2 = Color.green(bp);
 					b2 = Color.blue(bp);
-					if (Math.abs(a - a2) <= t  Math.sqrt(Math.pow((r-r2),2) + Math.pow((g-g2),2) + Math.pow((b-b2),2)) <= t){ //&& Math.abs(r - r2) <= t
+					if (Math.abs(a - a2) <= t  && Math.sqrt(Math.pow((r-r2),2) + Math.pow((g-g2),2) + Math.pow((b-b2),2)) <= t){ //&& Math.abs(r - r2) <= t
 							//&& Math.abs(g - g2) <= t * 2
 							//&& Math.abs(b - b2) <= t) {
 
@@ -757,19 +810,25 @@ public class Pic1View extends Activity {
 			Canvas c;
 			while (_run) {
 				if (shouldmodify) {
-					bitmap.setPixels(pixels, 0, bitmap.getWidth(), 0, 0,
-							bitmap.getWidth(), bitmap.getHeight());
+					//bitmap.setPixels(pixels, 0, bitmap.getWidth(), 0, 0,
+							//bitmap.getWidth(), bitmap.getHeight());
 					shouldmodify = false;
 					int counter = 1;
-					Toast message = Toast.makeText(Pic1View.this, "Saving image...",
-						Toast.LENGTH_SHORT);
-					message.setGravity(Gravity.CENTER, message.getXOffset() / 2,
-					message.getYOffset() / 2);
-					message.show(); // display the Toast
+					
 					
 					while (counter <= index && index > 0) {
-						if (index > 0)
-							modify(colorA[counter - 1]);
+						if (index > 0){
+							int[] data = new int[bitmap.getWidth()*bitmap.getHeight()];
+							bitmap.getPixels(data, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+							int increment = data.length / 8;
+							for(int i = 0; i < 8; i++) {
+							    new Thread(new Worker(colorA[counter - 1],i * increment, (i + 1) * increment, data)).start();
+							}
+							
+							
+						}
+							
+							//modify(colorA[counter - 1]);
 						counter++;
 					}
 					cancelmessage = true;
