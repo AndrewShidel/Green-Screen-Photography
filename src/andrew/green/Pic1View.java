@@ -729,9 +729,9 @@ public class Pic1View extends Activity {
 					r2 = Color.red(bp);
 					g2 = Color.green(bp);
 					b2 = Color.blue(bp);
-					if (Math.abs(a - a2) <= t && Math.abs(r - r2) <= t
-							&& Math.abs(g - g2) <= t * 2
-							&& Math.abs(b - b2) <= t) {
+					if (Math.abs(a - a2) <= t  Math.sqrt(Math.pow((r-r2),2) + Math.pow((g-g2),2) + Math.pow((b-b2),2)) <= t){ //&& Math.abs(r - r2) <= t
+							//&& Math.abs(g - g2) <= t * 2
+							//&& Math.abs(b - b2) <= t) {
 
 						bitmap.setPixel(cx, cy, Color.TRANSPARENT);
 						count++;
@@ -761,6 +761,12 @@ public class Pic1View extends Activity {
 							bitmap.getWidth(), bitmap.getHeight());
 					shouldmodify = false;
 					int counter = 1;
+					Toast message = Toast.makeText(Pic1View.this, "Saving image...",
+						Toast.LENGTH_SHORT);
+					message.setGravity(Gravity.CENTER, message.getXOffset() / 2,
+					message.getYOffset() / 2);
+					message.show(); // display the Toast
+					
 					while (counter <= index && index > 0) {
 						if (index > 0)
 							modify(colorA[counter - 1]);
