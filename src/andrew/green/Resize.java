@@ -167,12 +167,22 @@ public class Resize extends Activity {
 				nbitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 				fos.close();
 				Log.d("a", "File saved");
+				
+				Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+			    
+				Uri contentUri = Uri.fromFile(file);
+				mediaScanIntent.setData(contentUri);
+				this.sendBroadcast(mediaScanIntent);
+				
 			} catch (FileNotFoundException e) {
 				Log.d("a", "FileNotFoundException");
 			} catch (IOException e) {
 				Log.d("a", "IOEception");
 			}
 		}
+		
+		
+		
 
 		Intent intent = new Intent(getBaseContext(), done.class);
 		startActivity(intent);
