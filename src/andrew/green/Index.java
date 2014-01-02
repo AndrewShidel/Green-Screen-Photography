@@ -4,7 +4,7 @@ import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.view.*;
-import tucker.shidel.greenscreen.R;
+import tucker.shidel.greenscreenphotography.R;
 
 public class Index extends Activity {
 	SharedPreferences preferences;

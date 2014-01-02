@@ -10,7 +10,7 @@ import android.provider.MediaStore.MediaColumns;
 import android.util.*;
 import android.view.*;
 import java.io.*;
-import tucker.shidel.greenscreen.R;
+import tucker.shidel.greenscreenphotography.R;
 
 public class GetBackground extends Activity {
 	SharedPreferences preferences;

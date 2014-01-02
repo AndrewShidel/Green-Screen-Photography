@@ -3,7 +3,7 @@ package andrew.green;
 import android.app.*;
 import android.content.*;
 import android.os.*;
-import tucker.shidel.greenscreen.R;
+import tucker.shidel.greenscreenphotography.R;
 
 public class Settings extends Activity {
 	SharedPreferences preferences;

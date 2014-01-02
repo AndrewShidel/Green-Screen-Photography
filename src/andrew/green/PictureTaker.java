@@ -17,7 +17,7 @@ import android.view.View.*;
 import android.widget.*;
 import java.io.*;
 import java.util.*;
-import tucker.shidel.greenscreen.R;
+import tucker.shidel.greenscreenphotography.R;
 
 import android.hardware.Camera;
 

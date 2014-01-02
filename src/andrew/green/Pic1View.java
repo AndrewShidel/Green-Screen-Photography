@@ -11,7 +11,7 @@ import android.util.*;
 import android.view.*;
 import android.widget.*;
 import java.io.*;
-import tucker.shidel.greenscreen.R;
+import tucker.shidel.greenscreenphotography.R;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;

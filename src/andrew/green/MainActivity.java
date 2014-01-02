@@ -11,7 +11,7 @@ import android.util.*;
 import android.view.*;
 import android.widget.*;
 import java.io.*;
-import tucker.shidel.greenscreen.R;
+import tucker.shidel.greenscreenphotography.R;
 
 public class MainActivity extends Activity {
 	SharedPreferences preferences;
