@@ -12,3 +12,5 @@ How it works:
 3.  Select transpartent colors and color threshold for foreground.
 4.  Layer foreground infront of background.
 5.  Save/Export Image.
+
+[Download app in the Google play store](https://play.google.com/store/apps/details?id=tucker.shidel.greenscreenphotography "Green Screen Photography")
