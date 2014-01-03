@@ -16,4 +16,4 @@ How it works:
 [Download app in the Google play store](https://play.google.com/store/apps/details?id=tucker.shidel.greenscreenphotography "Green Screen Photography")
 
 
-["Find more information at shidel.com](http://shidel.com "Andrew and Joe Shidel's development portfolio.")
+[Find more information at shidel.com](http://shidel.com "Andrew and Joe Shidel's development portfolio.")
