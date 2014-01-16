@@ -34,6 +34,19 @@ public class MainActivity extends Activity {
 			s = extras.getString("uri");
 		}
 	}
+	
+	@Override
+	protected void onResume() {
+    		// TODO Auto-generated method stub
+    		super.onResume();
+	}
+
+
+	@Override
+	protected void onPause() {
+    		// TODO Auto-generated method stub
+    		super.onPause();
+	}
 
 	public void takePicture(View view) {
 
