@@ -27,6 +27,19 @@ public class GetBackground extends Activity {
 		
 		Log.d("resource folder: ", ""+metrics.densityDpi);
 	}
+	
+	@Override
+	protected void onResume() {
+    		// TODO Auto-generated method stub
+    		super.onResume();
+	}
+
+
+	@Override
+	protected void onPause() {
+    		// TODO Auto-generated method stub
+    		super.onPause();
+	}
 
 	public void takePicture(View view) {
 		dispatchTakePictureIntent();
